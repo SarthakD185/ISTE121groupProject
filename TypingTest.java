@@ -16,6 +16,8 @@
    * @author  Group 3
    * @version 2211
   */
+  
+  //ADding a comment 
   public class TypingTest extends Application implements EventHandler<ActionEvent> {
      // GUI stuff
      private Stage stage;  
@@ -146,7 +148,7 @@
          
          for(int i = 0; i < text.size(); i++){
          
-            taOutput.appendText(text.get(i));
+            taOutput.appendText(text.get(i) + "\n");
                
          }
          
