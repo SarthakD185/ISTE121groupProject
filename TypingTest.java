@@ -17,6 +17,7 @@
    * @version 2211
   */
   
+  //TEST 4
   //ADding a comment 
   public class TypingTest extends Application implements EventHandler<ActionEvent> {
      // GUI stuff
