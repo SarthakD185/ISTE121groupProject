@@ -222,6 +222,7 @@ public class TestServer extends Application implements EventHandler<ActionEvent>
             
             ObjectOutputStream out = new ObjectOutputStream(cSocket.getOutputStream());
             
+            System.out.println(text.size());
             out.writeObject(text);
             out.flush();
 

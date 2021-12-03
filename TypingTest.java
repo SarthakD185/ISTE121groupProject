@@ -8,6 +8,7 @@
    import javafx.stage.*;
    import javafx.geometry.*;
    import java.util.*;
+   import java.util.Random;
  
    import java.net.*;
    import java.io.*;
@@ -18,6 +19,7 @@
    import javax.crypto.Cipher;
    import javax.crypto.SecretKey;
    import javax.crypto.KeyGenerator;
+   
 
   
   
@@ -150,15 +152,28 @@
          input = new ObjectInputStream(socket.getInputStream());
          ArrayList<String> text = (ArrayList<String>) input.readObject();
          
+         
+         Random rand = new Random();          
+         int index = rand.nextInt(text.size()-100);
+         System.out.println(text.size());
+         System.out.println(text.get(0));
+         
+         
+                  
          SecretKey secretKey = KeyGenerator.getInstance("AES").generateKey();
          EncryptDecrypt ed = new EncryptDecrypt(secretKey, "AES/CBC/PKCS5Padding");
          
-         for(int i = 0; i < text.size(); i++){
-            ed.encrypt(text.get(text.size() -1), "wordBank.txt");
+         for(int i = index; i < index+100; i++){
             taOutput.appendText(text.get(i) + "\n");
+            
+            //CHANGE THIS TO THE TEXT BEING PUT IN NOT THE SOURCE TEXT
+            //ed.encrypt(text.get(text.size() -1), "wordBank.txt");
+            
          }
-         
          taOutput.appendText("this works");
+         
+         
+         
       }
       catch(Exception e) {
             Alert alert = new Alert(AlertType.ERROR);
