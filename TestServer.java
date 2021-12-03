@@ -157,7 +157,7 @@ public class TestServer extends Application implements EventHandler<ActionEvent>
          
             while((line = br.readLine()) != null){
                
-               text.add(line);
+               text.add(line + "\n");
             
                
             }
@@ -224,13 +224,7 @@ public class TestServer extends Application implements EventHandler<ActionEvent>
             
             out.writeObject(text);
             out.flush();
-            
-            
-            
-              // switch
-            
-              
-         
+
             cSocket.close();
          }  
          catch(Exception e) {
