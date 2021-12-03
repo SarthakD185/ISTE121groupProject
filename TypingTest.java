@@ -9,8 +9,19 @@
    import javafx.geometry.*;
    import java.util.*;
  
-  import java.net.*;
-  import java.io.*;
+   import java.net.*;
+   import java.io.*;
+  
+   import java.io.FileInputStream;
+   import java.io.FileOutputStream;
+   import javax.crypto.CipherOutputStream;
+   import javax.crypto.Cipher;
+   import javax.crypto.SecretKey;
+   import javax.crypto.KeyGenerator;
+
+  
+  
+  
   /**
    * TypingTet - main class of program
    * @author  Group 3
@@ -31,14 +42,14 @@
     
      private TextField tfInput = new TextField();
      private TextField tfName = new TextField();
-    private TextField tfIP = new TextField();
+     private TextField tfIP = new TextField();
     
-    private Button btnDone = new Button("Done");
+     private Button btnDone = new Button("Done");
      private Button btnEnter = new Button("Enter");
      private Button btnConnect = new Button("Connect");
     
      private Label lblName = new Label("Enter Your Name Here:");
-    private Label lblProgress = new Label("Your Progress:");
+     private Label lblProgress = new Label("Your Progress:");
      private Label lblInput = new Label("Type Sentence Here:");
    
      // boolean attribute
@@ -49,7 +60,6 @@
      private Socket socket = null;
    
      private String name = "UNKNOWN";
-     
      
      private ObjectInputStream input = null;
          
@@ -134,16 +144,18 @@
    
     }
     
-    public void test(){
+    public void test() {
+
       try{
          input = new ObjectInputStream(socket.getInputStream());
-      
          ArrayList<String> text = (ArrayList<String>) input.readObject();
          
-         for(int i = 0; i < text.size(); i++){
+         SecretKey secretKey = KeyGenerator.getInstance("AES").generateKey();
+         EncryptDecrypt ed = new EncryptDecrypt(secretKey, "AES/CBC/PKCS5Padding");
          
+         for(int i = 0; i < text.size(); i++){
+            ed.encrypt(text.get(text.size() -1), "wordBank.txt");
             taOutput.appendText(text.get(i) + "\n");
-               
          }
          
          taOutput.appendText("this works");
@@ -210,5 +222,34 @@
           System.currentTimeMillis();
        }
     }
+    
+   class EncryptDecrypt {
+   
+      private SecretKey sKey; //random key generated
+      private Cipher c; //AES/CBC/PKCS5Padding
+      
+      public EncryptDecrypt(SecretKey sKey, String c) throws Exception {  
+         this.sKey = sKey;
+         this.c = Cipher.getInstance(c);
+      }
+      
+      public void encrypt(String content, String fileName) throws Exception {
+         c.init(c.ENCRYPT_MODE, sKey);
+         byte[] iv = c.getIV(); //initialization vector (used to prevent repetition) 
+         
+         try {
+            FileOutputStream fos = new FileOutputStream(fileName);
+            CipherOutputStream cos = new CipherOutputStream(fos, c);
+            fos.write(iv);
+            cos.write(content.getBytes());
+         }
+         catch (Exception e) {
+            System.out.println(e);
+         }
+    
+      }   
+   }     
+    
+    
  }
 
