@@ -40,7 +40,8 @@
      private Label lblInput = new Label("Type Sentence Here:");
    
      // boolean attribute
-     private boolean keepGoing = false;
+     private boolean keepGoing = true; 
+     private WordProgressBar wpb = null;
     
      // Server attributes
      public static final int SERVER_PORT = 32001;
@@ -60,6 +61,8 @@
      public void start(Stage _stage) throws Exception {
         stage = _stage;                        // save stage as an attribute
         stage.setTitle("Typing Test");            // set the text in the title bar
+       
+        wpb = new WordProgressBar();
        
         FlowPane fpTop = new FlowPane(8,8);
         fpTop.getChildren().addAll(lblName, tfName, btnEnter, tfIP, btnConnect);
@@ -126,6 +129,9 @@
        tfName.setEditable(false);
       
        // System.out.println(name);
+       
+       Thread t0 = new Thread(wpb);
+      t0.start();
     }
    
     public void doDone() {
@@ -181,32 +187,29 @@
       
        /* run method for progress bar */
        public void run() {
-          for(int i = 1; (i <= 100 && keepGoing == true); i++) {
-             double time = (Math.random() * 100.0);
-             long timeLong = Math.round(time);
+          for(int i = 1; (i <= 100 && keepGoing == true); i+=4) {
+            try {
+               Thread.sleep(1000);
+            }
+            catch(InterruptedException ie) {
+               // handles exception 
+            }
             
-             try {
-                Thread.sleep(timeLong);
-             }
-             catch(InterruptedException ie) {
-                // handles exception
-             }
-            
-             final int finalI = i;
+            final int finalI = i;
          
-             // updates Progress Bar
-              Platform.runLater(new Runnable() {
-                public void run() {
-                   pbBar.setProgress(finalI / 100.0);
-                   lblValue.setText("" + finalI);
-                }
+            // updates Progress Bar
+            Platform.runLater(new Runnable() {
+               public void run() {
+                  pbBar.setProgress(finalI / 100.0);
+                  lblValue.setText("" + finalI);
+               }
                   
-             });
-          }
-          keepGoing = false;
-          //System.out.println("We are running " + num);
-          System.currentTimeMillis();
-       }
-    }
+            });
+         }
+         keepGoing = false;
+         //btnStart.setDisable(false);
+
+      }
+   } 
  }
 
