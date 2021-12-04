@@ -143,7 +143,12 @@
     }
    
     public void doDone() {
-   
+      //popup code ig idk
+      Alert pp = new Alert(AlertType.INFORMATION);
+      pp.setTitle("Score");
+      pp.setContentText("Name: " + tfName.getText() + "  Score " + "[Score goes here]");
+      pp.showAndWait();
+      //end of popup code
     }
     
     public void test() {
