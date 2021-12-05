@@ -34,12 +34,10 @@
   public class TypingTest extends Application implements EventHandler<ActionEvent> {
      // GUI stuff
      private Stage stage;  
-    private Scene scene;       
+     private Scene scene;       
      private VBox root = new VBox(8);
     
-     // attributes
-     private WordProgressBar pbBar = new WordProgressBar();
-    
+     // attributes 
      private TextArea taOutput = new TextArea();
     
      private TextField tfInput = new TextField();
@@ -53,9 +51,11 @@
      private Label lblName = new Label("Enter Your Name Here:");
      private Label lblProgress = new Label("Your Progress:");
      private Label lblInput = new Label("Type Sentence Here:");
+     private Label lblIP = new Label("Enter IP:");
    
      // boolean attribute
-     private boolean keepGoing = false;
+     private boolean keepGoing = true;
+     private WordProgressBar wpb;
     
      // Server attributes
      public static final int SERVER_PORT = 32001;
@@ -73,14 +73,14 @@
      // Called automatically after launch sets up javaFX
      public void start(Stage _stage) throws Exception {
         stage = _stage;                        // save stage as an attribute
-        stage.setTitle("Typing Test");            // set the text in the title bar
+        stage.setTitle("Typing Test");         // set the text in the title bar
        
         FlowPane fpTop = new FlowPane(8,8);
-        fpTop.getChildren().addAll(lblName, tfName, btnEnter, tfIP, btnConnect);
+        fpTop.getChildren().addAll(lblIP, tfIP, btnConnect, lblName, tfName, btnEnter, tfIP, btnConnect);
         fpTop.setAlignment(Pos.CENTER);
        
         FlowPane fpMid = new FlowPane(8,8);
-        fpMid.getChildren().addAll(lblProgress, pbBar);
+        fpMid.getChildren().addAll(lblProgress, wpb);
         fpMid.setAlignment(Pos.CENTER);
        
         FlowPane fpBot = new FlowPane(8,8);
@@ -138,8 +138,6 @@
       
        btnEnter.setDisable(true);
        tfName.setEditable(false);
-      
-       // System.out.println(name);
     }
    
     public void doDone() {
@@ -215,12 +213,9 @@
       
        /* run method for progress bar */
        public void run() {
-          for(int i = 1; (i <= 100 && keepGoing == true); i++) {
-             double time = (Math.random() * 100.0);
-             long timeLong = Math.round(time);
-            
+          for(int i = 5; (i <= 100 && keepGoing == true); i+=5) {
              try {
-                Thread.sleep(timeLong);
+                Thread.sleep(1000);
              }
              catch(InterruptedException ie) {
                 // handles exception
@@ -238,8 +233,8 @@
              });
           }
           keepGoing = false;
-          //System.out.println("We are running " + num);
-          System.currentTimeMillis();
+          tfInput.setDisable(true);
+          // System.currentTimeMillis();
        }
     }
     
